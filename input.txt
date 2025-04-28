@@ -1,0 +1,12 @@
+if a>2 {
+    a:=2;
+} else {
+    a:=4;
+    while a<8 do {
+        a:=a+1;
+    }
+}
+b:=4;
+while 3*b>a do {
+    b-=1
+}

@@ -28,6 +28,7 @@ public class Main {
             new_value -= 1;
         }
         int[] out = inverse_phi(new_value);
+        //System.out.println("phi statement mod:"+mod_value+" val:"+new_value+" separates to:"+out[0]+","+out[1]);
         switch (mod_value) {
             case 1:
                 return inverse_phi_var(out[0])+":="+inverse_phi_arithmetic(out[1]);
@@ -35,7 +36,8 @@ public class Main {
                 return inverse_phi_statement(out[0], indent)+";\n"+tab(indent)+inverse_phi_statement(out[1], indent);
             case 3:
                 int[] out2 = inverse_phi(out[1]);
-                return "if "+inverse_phi_bool(out[0])+" then {\n"+tab(indent+1)+inverse_phi_statement(out2[0],indent+1)+"\n"+tab(indent)+"} else {\n"+tab(indent+1)+inverse_phi_statement(out2[1],indent+1)+"\n}\n";
+                //System.out.println("if statement further separates to "+out2[0]+','+out2[1]);
+                return "if "+inverse_phi_bool(out[0])+" then {\n"+tab(indent+1)+inverse_phi_statement(out2[0],indent+1)+"\n"+tab(indent)+"} else {\n"+tab(indent+1)+inverse_phi_statement(out2[1],indent+1)+"\n"+tab(indent)+"}";
             case 4:
                 return "while "+inverse_phi_bool(out[0])+" do {\n"+tab(indent+1)+inverse_phi_statement(out[1],indent+1)+"\n"+tab(indent)+"}";
         }
@@ -45,6 +47,7 @@ public class Main {
         return "x_"+value;
     }
     public static String inverse_phi_bool(int value) {
+        //System.out.println("phi boolean - "+value);
         if (value == 0) {
             return "False";
         } else if (value == 1) {
