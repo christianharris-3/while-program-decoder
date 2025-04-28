@@ -41,7 +41,7 @@ public class WhileStatement {
 
             String boolString = Compiler.clean_string(Compiler.remove_suffix(Compiler.remove_prefix(split[0],"while"),"do"));
             String bodyString = Compiler.clean_string(split[1]);
-            String finalString = Compiler.clean_string(split[1]);
+            String finalString = Compiler.clean_string(split[2]);
 
             boolean_statement = new WhileBoolean(boolString);
             first_statement = new WhileStatement(bodyString);

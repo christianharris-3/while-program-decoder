@@ -31,16 +31,12 @@ public class Compiler {
                 } else {
                     program = program + "\n"+ fileReader.nextLine();
                 }
-
             }
         } catch (java.io.FileNotFoundException e) {
             System.out.println("error loading file: "+file);
         }
         return program;
     }
-//    public static String preprocess_code(String program) {
-//        String output = "";
-//    }
     public static String clean_string(String program) {
         if (program.isEmpty()) {
             return "";
