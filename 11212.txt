@@ -1,0 +1,3 @@
+while False do {
+    x_0:=35
+}

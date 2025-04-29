@@ -1,8 +1,9 @@
 import java.io.File;
+import java.math.BigInteger;
 import java.util.Scanner;
 
-public class Compiler {
-    public static void main(String[] args) {
+public class Encoder {
+    public static void main(String[] args) throws Exception{
         Scanner scanner = new Scanner(System.in);
         System.out.println("enter your program: ");
         String file = scanner.nextLine();
@@ -17,8 +18,9 @@ public class Compiler {
         System.out.println("---- program input ----");
         System.out.println(clean_string(program));
         System.out.println("-----------------------");
+        System.out.println("loading...");
         WhileStatement compiled = new WhileStatement(program);
-        System.out.println("RECONSTRUCTED");
+        System.out.println("RECONSTRUCTED value is -> "+compiled.map_to_natural());
         System.out.println(compiled.reconstruct(0));
     }
     public static String read_file(String file) {
@@ -68,5 +70,20 @@ public class Compiler {
     }
     public static String tab(int indent) {
         return " ".repeat(indent*4);
+    }
+    public static BigInteger phi(BigInteger m, BigInteger n) {
+
+        BigInteger result = BigInteger.ONE;
+        BigInteger base = BigInteger.TWO;
+
+        while (m.signum() > 0) {
+            if (m.testBit(0)) {
+                result = result.multiply(base);
+            }
+            base = base.multiply(base);
+            m = m.shiftRight(1);
+        }
+
+        return result.multiply(n.shiftLeft(1).add(BigInteger.ONE)).subtract(BigInteger.ONE);
     }
 }

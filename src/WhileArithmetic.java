@@ -1,3 +1,5 @@
+import java.math.BigInteger;
+
 public class WhileArithmetic {
     private int type;
     private WhileArithmetic left_arith;
@@ -6,7 +8,7 @@ public class WhileArithmetic {
     private int value;
 
     public WhileArithmetic(String statement) {
-        statement = Compiler.clean_string(statement);
+        statement = Encoder.clean_string(statement);
 
         if (statement.contains("*")) {
             type = 4;
@@ -34,19 +36,23 @@ public class WhileArithmetic {
         }
     }
     public String reconstruct() {
-        switch (type) {
-            case 5:
-                return String.valueOf(value);
-            case 1:
-                return variable.reconstruct();
-            case 2:
-                return left_arith.reconstruct()+"+"+right_arith.reconstruct();
-            case 3:
-                return left_arith.reconstruct()+"-"+right_arith.reconstruct();
-            case 4:
-                return left_arith.reconstruct()+"*"+right_arith.reconstruct();
-            default:
-                return "arithmetic";
-        }
+        return switch (type) {
+            case 5 -> String.valueOf(value);
+            case 1 -> variable.reconstruct();
+            case 2 -> left_arith.reconstruct() + "+" + right_arith.reconstruct();
+            case 3 -> left_arith.reconstruct() + "-" + right_arith.reconstruct();
+            case 4 -> left_arith.reconstruct() + "*" + right_arith.reconstruct();
+            default -> "arithmetic";
+        };
+    }
+    public BigInteger map_to_natural() {
+        return switch (type) {
+            case 5 -> BigInteger.valueOf(5).multiply(BigInteger.valueOf(value));
+            case 1 -> BigInteger.valueOf(1).add(BigInteger.valueOf(5).multiply(variable.map_to_natural()));
+            case 2 -> BigInteger.valueOf(2).add(BigInteger.valueOf(5).multiply(Encoder.phi(left_arith.map_to_natural(), right_arith.map_to_natural())));
+            case 3 -> BigInteger.valueOf(3).add(BigInteger.valueOf(5).multiply(Encoder.phi(left_arith.map_to_natural(), right_arith.map_to_natural())));
+            case 4 -> BigInteger.valueOf(4).add(BigInteger.valueOf(5).multiply(Encoder.phi(left_arith.map_to_natural(), right_arith.map_to_natural())));
+            default -> BigInteger.ZERO;
+        };
     }
 }
