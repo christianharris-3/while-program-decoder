@@ -1,4 +1,4 @@
-# While Program Encoder
+# While Program Decoder
 Can decode a natural number to while program, or encode a while program into a natural number.
 
 # To use
