@@ -30,5 +30,6 @@ bin/
 
 ## idk
 .idea/*
-## *.txt
+*.txt
+src/Decoder.java
 while compiler.iml
