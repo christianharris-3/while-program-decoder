@@ -4,8 +4,12 @@ import java.util.Scanner;
 public class Decoder {
     public static void main(String[] args) {
         BigInteger programValue = getValue();
-
         System.out.println(valueToProgram(programValue));
+
+//        for (int i=0;i<10000;i++) {
+//            System.out.println("----- code for "+i+" ------");
+//            System.out.println(valueToProgram(BigInteger.valueOf(i)));
+//        }
     }
     public static BigInteger getValue() {
         Scanner scanner = new Scanner(System.in);

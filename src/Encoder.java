@@ -80,7 +80,12 @@ public class Encoder {
             if (m.testBit(0)) {
                 result = result.multiply(base);
             }
-            base = base.multiply(base);
+            try {
+                base = base.multiply(base);
+            } catch (ArithmeticException e) {
+                System.out.println("error happened when multiplying base, log10(base) = "+base.toString().length()+" error: "+e.toString());
+            }
+
             m = m.shiftRight(1);
         }
 

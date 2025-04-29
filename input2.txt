@@ -1,4 +1,19 @@
-if 0<=y then {
-    y:=0;
+if False then {
+    while True {
+        x_0:=0
+    }
+    if a=1 {
+        a := 2;
+    } else {
+        a := 3;
+    }
+} else {
+    while x_1<=0 do {
+        if False then {
+            skip;
+            skip
+        } else {
+            x_0:=x_1+2
+        }
+    }
 }
-b :=2;
