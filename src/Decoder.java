@@ -13,6 +13,10 @@ public class Decoder {
 //            System.out.println("----- code for "+i+" ------");
 //            System.out.println(valueToProgram(BigInteger.valueOf(i)));
 //        }
+//        for (int code : new int[] {12111,15111,16321,11212,13212,15212,16412,10120,11120}) {
+//            System.out.println("----- code for "+code+" ------");
+//            System.out.println(valueToProgram(BigInteger.valueOf(code)));
+//        }
     }
     public static BigInteger getValue() {
         Scanner scanner = new Scanner(System.in);
@@ -35,17 +39,17 @@ public class Decoder {
             mod_value += 4;
             new_value = new_value.subtract(BigInteger.ONE);
         }
-        BigInteger[] out = inverse_phi(new_value);
+        BigInteger[] out = Utils.inverse_phi(new_value);
         switch (mod_value) {
             case 1:
                 return inverse_phi_var(out[0])+":="+inverse_phi_arithmetic(out[1])+";";
             case 2:
-                return inverse_phi_statement(out[0], indent)+"\n"+tab(indent)+inverse_phi_statement(out[1], indent);
+                return inverse_phi_statement(out[0], indent)+"\n"+Utils.tab(indent)+inverse_phi_statement(out[1], indent);
             case 3:
-                BigInteger[] out2 = inverse_phi(out[1]);
-                return "if "+inverse_phi_bool(out[0])+" then"+lBrace+"\n"+tab(indent+1)+inverse_phi_statement(out2[0],indent+1)+"\n"+tab(indent)+rBrace+"else"+lBrace+"\n"+tab(indent+1)+inverse_phi_statement(out2[1],indent+1);//+"\n"+tab(indent)+rBrace;
+                BigInteger[] out2 = Utils.inverse_phi(out[1]);
+                return "if "+inverse_phi_bool(out[0])+" then"+lBrace+"\n"+Utils.tab(indent+1)+inverse_phi_statement(out2[0],indent+1)+"\n"+Utils.tab(indent)+rBrace+"else"+lBrace+"\n"+Utils.tab(indent+1)+inverse_phi_statement(out2[1],indent+1);//+"\n"+tab(indent)+rBrace;
             case 4:
-                return "while "+inverse_phi_bool(out[0])+" do"+lBrace+"\n"+tab(indent+1)+inverse_phi_statement(out[1],indent+1)+"\n"+tab(indent)+rBrace;
+                return "while "+inverse_phi_bool(out[0])+" do"+lBrace+"\n"+Utils.tab(indent+1)+inverse_phi_statement(out[1],indent+1)+"\n"+Utils.tab(indent)+rBrace;
         }
         return "statement broke";
     }
@@ -65,7 +69,7 @@ public class Decoder {
             mod_value += 4;
             new_value = new_value.subtract(BigInteger.ONE);
         }
-        BigInteger[] out = inverse_phi(new_value);
+        BigInteger[] out = Utils.inverse_phi(new_value);
         switch (mod_value) {
             case 2:
                 return inverse_phi_arithmetic(out[0])+"="+inverse_phi_arithmetic(out[1]);
@@ -81,7 +85,7 @@ public class Decoder {
     public static String inverse_phi_arithmetic(BigInteger value) {
         BigInteger new_value = value.divide(BigInteger.valueOf(5));
         int mod_value = value.mod(BigInteger.valueOf(5)).intValue();
-        BigInteger[] out = inverse_phi(new_value);
+        BigInteger[] out = Utils.inverse_phi(new_value);
         switch (mod_value) {
             case 0:
                 return String.valueOf(new_value);
@@ -95,18 +99,5 @@ public class Decoder {
                 return inverse_phi_arithmetic(out[0])+"*"+inverse_phi_arithmetic(out[1]);
         }
         return "arith broke";
-    }
-    public static BigInteger[] inverse_phi(BigInteger value) {
-        value = value.add(BigInteger.ONE);
-        BigInteger m = BigInteger.ZERO;
-        while (value.mod(BigInteger.TWO).signum() == 0) {
-            m = m.add(BigInteger.ONE);
-            value = value.divide(BigInteger.TWO);
-        }
-        BigInteger n = (value.subtract(BigInteger.ONE)).divide(BigInteger.TWO);
-        return new BigInteger[] {m ,n};
-    }
-    public static String tab(int indent) {
-        return " ".repeat(indent*4);
     }
 }
