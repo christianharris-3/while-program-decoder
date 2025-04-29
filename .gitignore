@@ -30,4 +30,5 @@ bin/
 
 ## idk
 .idea/*
+## *.txt
 while compiler.iml

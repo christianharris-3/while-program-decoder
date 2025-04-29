@@ -1,6 +1,0 @@
-while False do
-    x_0:=35;
-    if True then
-        b:=2;
-    else
-        c:=5;
