@@ -25,4 +25,7 @@ public class WhileVariable {
     public BigInteger map_to_natural() {
         return BigInteger.valueOf(var_id);
     }
+    public String output_python() {
+        return reconstruct();
+    }
 }

@@ -1,6 +1,4 @@
 import java.math.BigInteger;
-import java.util.ArrayList;
-import java.util.Arrays;
 
 public class WhileStatement {
     public int type;
@@ -158,5 +156,19 @@ public class WhileStatement {
         } else {
             throw new Exception("Statement of type -1 called");
         }
+    }
+
+    public String output_python(int indent) {
+        String output = switch (type) {
+            case 0 -> Encoder.tab(indent) + "pass";
+            case 1 -> Encoder.tab(indent) + assigning_variable.output_python() + " = " + assigning_statement.output_python();
+            case 3 -> Encoder.tab(indent) + "if " + boolean_statement.output_python() + ":\n" + first_statement.output_python(indent + 1) + "\n" + Encoder.tab(indent) + "else:\n" + second_statement.output_python(indent + 1);
+            case 4 -> Encoder.tab(indent) + "while " + boolean_statement.output_python() + ":\n" + first_statement.output_python(indent + 1);
+            default -> "";
+        };
+        if (type != -1 && final_statement.type != -1) {
+            output = output+"\n"+final_statement.output_python(indent);
+        }
+        return output;
     }
 }

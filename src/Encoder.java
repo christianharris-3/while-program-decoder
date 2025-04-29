@@ -18,12 +18,11 @@ public class Encoder {
 
         System.out.println("---- program input ----");
         System.out.println(clean_string(program));
-        System.out.println("-----------------------");
-        System.out.println("loading...");
         WhileStatement compiled = new WhileStatement(program);
         System.out.println("---- RECONSTRUCTED ----");
         System.out.println(compiled.reconstruct(0));
-        System.out.println("------ value is "+compiled.map_to_natural());
+        System.out.println("------ loading... -----");
+        System.out.println("value is: "+compiled.map_to_natural());
     }
     public static String read_file(String file) {
         String program = "";
@@ -74,6 +73,8 @@ public class Encoder {
                 lines = program.split("\n");
             }
         }
+        program = program.replace("≔",":=");
+        program = program.replace("×","*");
 
         int i = 0;
         int j = program.length();

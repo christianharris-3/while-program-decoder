@@ -62,4 +62,15 @@ public class WhileBoolean {
             default -> BigInteger.ZERO;
         };
     }
+    public String output_python() {
+        return switch (type) {
+            case 0 -> "False";
+            case 1 -> "True";
+            case 2 -> left_arith.reconstruct() + " == " + right_arith.reconstruct();
+            case 3 -> left_arith.reconstruct() + " <= " + right_arith.reconstruct();
+            case 4 -> "not " + left_bool.reconstruct();
+            case 5 -> left_bool.reconstruct() + " and " + right_bool.reconstruct();
+            default -> "bool";
+        };
+    }
 }

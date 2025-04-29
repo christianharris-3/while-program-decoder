@@ -55,4 +55,7 @@ public class WhileArithmetic {
             default -> BigInteger.ZERO;
         };
     }
+    public String output_python() {
+        return reconstruct();
+    }
 }
