@@ -1,0 +1,22 @@
+while False     do
+
+
+
+    if              False   then
+        skip;
+    else
+        skip;
+
+
+
+    if             False           then
+
+
+        skip;
+    else
+
+
+        x_0:=0;
+
+
+

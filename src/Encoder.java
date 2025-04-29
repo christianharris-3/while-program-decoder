@@ -1,11 +1,12 @@
 import java.io.File;
 import java.math.BigInteger;
+import java.util.Arrays;
 import java.util.Scanner;
 
 public class Encoder {
     public static void main(String[] args) throws Exception{
         Scanner scanner = new Scanner(System.in);
-        System.out.println("enter your program: ");
+        System.out.println("enter your program's filename: ");
         String file = scanner.nextLine();
         scanner.close();
         String program;
@@ -20,8 +21,9 @@ public class Encoder {
         System.out.println("-----------------------");
         System.out.println("loading...");
         WhileStatement compiled = new WhileStatement(program);
-        System.out.println("RECONSTRUCTED value is -> "+compiled.map_to_natural());
+        System.out.println("---- RECONSTRUCTED ----");
         System.out.println(compiled.reconstruct(0));
+        System.out.println("------ value is "+compiled.map_to_natural());
     }
     public static String read_file(String file) {
         String program = "";
@@ -43,6 +45,36 @@ public class Encoder {
         if (program.isEmpty()) {
             return "";
         }
+
+        String[] lines = program.split("\n");
+        StringBuilder builder = new StringBuilder();
+        for (String line: lines) {
+            if (!line.replace(" ","").isEmpty()) {
+                builder.append(line);
+                builder.append("\n");
+            }
+        }
+        program = builder.toString();
+        lines = program.split("\n");
+
+        boolean all_indented = true;
+        while (all_indented) {
+            for (String line: lines) {
+                if (get_indent(line) == 0) {
+                    all_indented = false;
+                }
+            }
+            if (all_indented) {
+                builder = new StringBuilder();
+                for (String line: lines) {
+                    builder.append(remove_prefix(line,"    "));
+                    builder.append("\n");
+                }
+                program = builder.toString();
+                lines = program.split("\n");
+            }
+        }
+
         int i = 0;
         int j = program.length();
         while (program.charAt(i) == ' ' || program.charAt(i) == '\n') {
@@ -71,6 +103,14 @@ public class Encoder {
     public static String tab(int indent) {
         return " ".repeat(indent*4);
     }
+    public static int get_indent(String line) {
+        int i = 0;
+        while (line.startsWith("    ")) {
+            i+=1;
+            line = remove_prefix(line, "    ");
+        }
+        return i;
+    }
     public static BigInteger phi(BigInteger m, BigInteger n) {
 
         BigInteger result = BigInteger.ONE;
@@ -83,7 +123,7 @@ public class Encoder {
             try {
                 base = base.multiply(base);
             } catch (ArithmeticException e) {
-                System.out.println("error happened when multiplying base, log10(base) = "+base.toString().length()+" error: "+e.toString());
+                System.out.println("error happened when multiplying base, log10(base) = "+base.toString().length()+" error: "+e);
             }
 
             m = m.shiftRight(1);

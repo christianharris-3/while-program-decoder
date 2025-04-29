@@ -1,4 +1,6 @@
 import java.math.BigInteger;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 public class WhileStatement {
     public int type;
@@ -69,24 +71,58 @@ public class WhileStatement {
             }
         }
     }
-    private static String[] sep_curley_bracket(String program) {
+    private static String[] sep_curley_bracket(String program) throws Exception{
         String[] output = new String[3];
         String[] sep = program.split("\\{",2);
         output[0] = Encoder.clean_string(sep[0]);
-        StringBuilder builder = new StringBuilder();
-        int bracket_counter = 0;
-        for (int i=0;i<sep[1].length();i++) {
-            if (sep[1].charAt(i) == '{') {
-                bracket_counter += 1;
-            } else if (sep[1].charAt(i) == '}') {
-                bracket_counter -= 1;
+        if (sep.length == 1) {
+            String[] lines = program.split("\n");
+            output[0] = lines[0];
+            StringBuilder builder = new StringBuilder();
+            int base_indent = Encoder.get_indent(lines[0]);
+            boolean block_found = false;
+            for (int i=1;i<lines.length;i++) {
+                if (!block_found) {
+                    int indent = Encoder.get_indent(lines[i]);
+                    if (indent > base_indent) {
+                        builder.append(lines[i]);
+                        builder.append('\n');
+                    } else if (indent < base_indent) {
+                        throw new Exception("invalid indentation in line: "+lines[i]);
+                    } else {
+                        output[1] = Encoder.clean_string(builder.toString());
+                        block_found = true;
+                        builder = new StringBuilder();
+                    }
+                }
+                if (block_found) {
+                    builder.append(lines[i]);
+                    builder.append('\n');
+                }
             }
-            if (bracket_counter == -1) {
-                output[1] = Encoder.clean_string(builder.toString());
-                output[2] = Encoder.clean_string(sep[1].substring(i+1));
-                return output;
+            if (block_found) {
+                output[2] = builder.toString();
             } else {
-                builder.append(sep[1].charAt(i));
+                output[1] = builder.toString();
+                output[2] = "";
+            }
+
+        } else {
+            StringBuilder builder = new StringBuilder();
+            int bracket_counter = 0;
+            for (int i=0;i<sep[1].length();i++) {
+                if (sep[1].charAt(i) == '{') {
+                    bracket_counter += 1;
+                } else if (sep[1].charAt(i) == '}') {
+                    bracket_counter -= 1;
+                }
+                if (bracket_counter == -1) {
+                    output[1] = Encoder.clean_string(builder.toString());
+                    output[2] = Encoder.clean_string(sep[1].substring(i+1));
+                    return output;
+                } else {
+                    builder.append(sep[1].charAt(i));
+                }
             }
         }
 

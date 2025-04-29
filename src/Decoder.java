@@ -1,7 +1,10 @@
 import java.math.BigInteger;
 import java.util.Scanner;
 
+
 public class Decoder {
+    private final static String lBrace = "";//" { ";
+    private final static String rBrace = "";//"} ";
     public static void main(String[] args) {
         BigInteger programValue = getValue();
         System.out.println(valueToProgram(programValue));
@@ -24,7 +27,7 @@ public class Decoder {
     }
     public static String inverse_phi_statement(BigInteger value, int indent) {
         if (value.signum() == 0) {
-            return "skip";
+            return "skip;";
         }
         BigInteger new_value = value.divide(BigInteger.valueOf(4));
         int mod_value = value.mod(BigInteger.valueOf(4)).intValue();
@@ -35,14 +38,14 @@ public class Decoder {
         BigInteger[] out = inverse_phi(new_value);
         switch (mod_value) {
             case 1:
-                return inverse_phi_var(out[0])+":="+inverse_phi_arithmetic(out[1]);
+                return inverse_phi_var(out[0])+":="+inverse_phi_arithmetic(out[1])+";";
             case 2:
-                return inverse_phi_statement(out[0], indent)+";\n"+tab(indent)+inverse_phi_statement(out[1], indent);
+                return inverse_phi_statement(out[0], indent)+"\n"+tab(indent)+inverse_phi_statement(out[1], indent);
             case 3:
                 BigInteger[] out2 = inverse_phi(out[1]);
-                return "if "+inverse_phi_bool(out[0])+" then {\n"+tab(indent+1)+inverse_phi_statement(out2[0],indent+1)+"\n"+tab(indent)+"} else {\n"+tab(indent+1)+inverse_phi_statement(out2[1],indent+1)+"\n"+tab(indent)+"}";
+                return "if "+inverse_phi_bool(out[0])+" then"+lBrace+"\n"+tab(indent+1)+inverse_phi_statement(out2[0],indent+1)+"\n"+tab(indent)+rBrace+"else"+lBrace+"\n"+tab(indent+1)+inverse_phi_statement(out2[1],indent+1);//+"\n"+tab(indent)+rBrace;
             case 4:
-                return "while "+inverse_phi_bool(out[0])+" do {\n"+tab(indent+1)+inverse_phi_statement(out[1],indent+1)+"\n"+tab(indent)+"}";
+                return "while "+inverse_phi_bool(out[0])+" do"+lBrace+"\n"+tab(indent+1)+inverse_phi_statement(out[1],indent+1)+"\n"+tab(indent)+rBrace;
         }
         return "statement broke";
     }
